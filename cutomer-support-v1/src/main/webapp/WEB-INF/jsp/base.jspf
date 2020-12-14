@@ -4,5 +4,5 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
-<%@ taglib prefix="wrox" uri="http://www.my.com/jsp/tld/wrox" %>
+<%@ taglib prefix="my" uri="http://www.my.com/jsp/tld/my" %>
 <%@ taglib prefix="template" tagdir="/WEB-INF/tags/template" %>

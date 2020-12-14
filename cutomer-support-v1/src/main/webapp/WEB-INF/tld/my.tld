@@ -6,8 +6,8 @@
         version="2.1">
 
     <tlib-version>1.0</tlib-version>
-    <short-name>wrox</short-name>
-    <uri>http://www.wrox.com/jsp/tld/wrox</uri>
+    <short-name>my</short-name>
+    <uri>http://www.my.com/jsp/tld/my</uri>
 
     <tag>
         <description><![CDATA[
