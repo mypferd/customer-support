@@ -1,14 +1,14 @@
 package com.my.site.entities;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.my.site.converters.InstantConverter;
 import com.my.site.validation.NotBlank;
 
 import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.*;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -48,6 +48,11 @@ public class Ticket implements Serializable {
     @Valid
     private List<Attachment> attachments = new ArrayList<>();
 
+    @Id
+    @Column(name = "TicketId")
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @XmlElement
+    @JsonProperty
     public long getId() {
         return id;
     }
@@ -56,6 +61,10 @@ public class Ticket implements Serializable {
         this.id = id;
     }
 
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "UserId")
+    @XmlElement
+    @JsonProperty
     public UserPrincipal getCustomer() {
         return customer;
     }
@@ -64,6 +73,9 @@ public class Ticket implements Serializable {
         this.customer = customer;
     }
 
+    @Basic
+    @XmlElement
+    @JsonProperty
     public String getSubject() {
         return subject;
     }
@@ -72,6 +84,9 @@ public class Ticket implements Serializable {
         this.subject = subject;
     }
 
+    @Lob
+    @XmlElement
+    @JsonProperty
     public String getBody() {
         return body;
     }
@@ -80,6 +95,10 @@ public class Ticket implements Serializable {
         this.body = body;
     }
 
+    @Convert(converter = InstantConverter.class)
+    @XmlElement
+    @XmlSchemaType(name = "dateTime")
+    @JsonProperty
     public Instant getDateCreated() {
         return dateCreated;
     }
@@ -88,11 +107,28 @@ public class Ticket implements Serializable {
         this.dateCreated = dateCreated;
     }
 
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL,
+            orphanRemoval = true)
+    @JoinTable(name = "Ticket_Attachment",
+            joinColumns = { @JoinColumn(name = "TicketId") },
+            inverseJoinColumns = { @JoinColumn(name = "AttachmentId") })
+    @OrderColumn(name = "SortKey")
+    @XmlElement(name = "attachment")
+    @JsonProperty
     public List<Attachment> getAttachments() {
         return attachments;
     }
 
     public void setAttachments(List<Attachment> attachments) {
         this.attachments = attachments;
+    }
+
+    public void addAttachment(Attachment attachment) {
+        this.attachments.add(attachment);
+    }
+
+    @Transient
+    public int getNumberOfAttachments() {
+        return this.attachments.size();
     }
 }
