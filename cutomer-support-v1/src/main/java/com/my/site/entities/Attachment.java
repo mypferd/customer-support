@@ -1,4 +1,8 @@
 package com.my.site.entities;
 
-public class Attachment {
+import javax.persistence.Entity;
+import java.io.Serializable;
+
+@Entity
+public class Attachment implements Serializable {
 }
